@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    
+    <form>
+        <label for="firstname">Firstname</label> <br />
+        <input type="text" name="firstname" id="firstname" placeholder="Enter your firstname"> <br />
+        <label for="lastname">Lastname</label> <br />
+        <input type="text" name="lastname" id="lastname" placeholder="Enter your lastname"> <br />
+        <label for="phone">Phone #</label> <br />
+        <input type="tel" name="phone" id="phone" placeholder="Enter your phone number"> <br />
+        <label for="address">Address</label> <br />
+        <input type="text" name="address" id="address" placeholder="Enter your Address"> <br />
+        <label for="email">Email</label> <br />
+        <input type="email" name="email" id="email" placeholder="Enter your email"> <br />
+
+    <br />        
+    <button type="button" id="formSubmit">Register</button>
+    </form>
+
+
+<script>
+
+
+processLogin = (event) => {
+event.preventDefault();
+
+const webservice_api_url = 'http://localhost:5000/registration';
+
+const firstname = document.getElementById('firstname').value;
+const lastname= document.getElementById('lastname').value;
+const phone = document.getElementById('phone').value;
+const address = document.getElementById('address').value;
+const email = document.getElementById('email').value;
+
+
+const data = {
+    firstname: firstname,
+    lastname: lastname,
+    phone: phone,
+    address: address,
+    email: email
+}
+
+console.log(data)
+const requestOption = {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
+};
+
+fetch(webservice_api_url, requestOption)
+    .then( response => response.json() )
+    .then(data => {
+        console.log('check here:', data);
+        if(data.code === 'success') {
+            alert("Successfully registered!")
+            window.location.href = '/'
+        } else {
+            alert('Registration failed! ' + data.msg)
+        }
+    })
+    .catch(error => {
+        console.log(error);
+        alert(error)
+    });
+}
+
+
+
+document.getElementById('formSubmit').addEventListener('click', processLogin);
+
+</script>
+
+</body>
+</html>

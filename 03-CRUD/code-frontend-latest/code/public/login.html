@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <div id="displayError"></div>
+    <form>
+        <label for="username">Username</label> <br />
+        <input type="text" name="username" id="username" placeholder="Enter your username"> <br />
+        <label for="password">Password</label> <br />
+        <input type="password" name="password" id="password" placeholder="Enter your password"> <br />
+
+    <br />        
+    <button type="button" id="formSubmit">Login</button>
+    </form>
+
+
+<script>
+
+
+//arrow function
+processLogin = (event) => {
+event.preventDefault();
+
+const webservice_api_url = 'http://localhost:5000/login-validation';
+
+const userNameTextfiled = document.getElementById('username');
+const passwordTextfiled = document.getElementById('password');
+
+const username_entry = userNameTextfiled.value; //data from textfield
+const password_entry = passwordTextfiled.value; //data from textfield
+
+
+
+
+//created an object
+const data = {
+    username: username_entry,
+    password: password_entry
+}
+
+const requestOption = {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+       // 'Beare Token': + localStorage.getItem('token')
+    },
+    body: JSON.stringify(data),
+};
+
+fetch(webservice_api_url, requestOption)
+    .then( 
+        reponse => {    
+            if(!reponse.ok){
+                throw new Error('Network response was not ok'); 
+            }    
+            return response.json()
+        }
+    )
+    .then(data => {
+        
+        console.log('check here:', data);
+
+        if (data.code == 'success') {
+          
+            localStorage.setItem('loginUser', JSON.stringify(data.loginUser));
+            window.location.href = 'http://localhost:3000/';
+
+        } else {
+            alert(data.msg);
+        }
+    })
+    .catch(error => {
+        console.log(error);
+        document.getElementById('displayError').innerHTML = error;
+    });
+
+
+
+
+document.getElementById('formSubmit').addEventListener('click', processLogin);
+
+</script>
+
+</body>
+</html>
