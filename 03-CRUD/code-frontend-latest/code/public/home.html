@@ -7,6 +7,10 @@
     <title>Home Page</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <style>
       body {
         padding-top: 56px; /* Adjust according to your navigation bar height */
@@ -49,6 +53,12 @@
     <h1>Welcome to Your Website</h1>
     <p>A short description of your website goes here.</p>
   </header>
+  <div style="display: block; text-align: center;">
+    <div id="div1" style="display: none;">Hello</div>
+    <div id="div2" style="display: none;">World</div>
+    <button id="fade">Fade In</button>
+  </div>
+  
   
   <!-- Main Content -->
   <section class="container mt-4">
@@ -74,16 +84,14 @@
   </footer>
   
   <!-- Bootstrap JS and jQuery (required for Bootstrap) -->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+ 
   
   
   <script>
 
 async function loadHomePageContent() {
 
-    const result = await fetch('http://localhost:5000/page-content/about'); //requesting
+    const result = await fetch('http://localhost:5000/page-content/home'); //requesting
     const data = await result.json();
 
     document.getElementById('main_p_content').innerHTML = data;
@@ -94,6 +102,14 @@ loadHomePageContent();
 
 
   </script>
-
+  <script>
+    $(document).ready(function() {
+    
+    $("#fade").click(function() {
+      $("#div1").fadeIn(3000); 
+      $("#div2").fadeIn(5000); 
+    });
+  });
+  </script>
 </body>
 </html>

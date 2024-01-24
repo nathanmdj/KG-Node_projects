@@ -1,8 +1,10 @@
 //MVC - model, view, controller design pattern
 const express = require("express");
 const app = express();
-const cors = require("cors")
+const cors = require("cors");
+const bodyParser = require("body-parser");
 
+// app.use(bodyParser.json)
 app.use(express.urlencoded({ extended:true })) //for form submission
 app.use(express.json()) //json response
 app.use(
@@ -260,5 +262,100 @@ app.delete('/delete/record/:id', (req, res)=>{
   
 })
 
+
+const pageContentArr = [
+    {
+        id:'home',
+        content:'sample content for home page'
+    },
+    {
+        id:'about',
+        content:'sample content for about'
+    },
+    {
+        id:'contact',
+        content:'sample content for contact us'
+    },
+]
+
+// app.post('/page-content', (req, res)=>{
+   
+//    let pageId = req.body.pageContent; 
+//    let actualContent = req.body.contentValue;
+
+//    newObject = {
+//         id: pageId,
+//         content:actualContent,
+//    } 
+    
+//    const contentIndex =  pageContent.findIndex( (obj) => obj.id === pageId );
+//    pageContent[contentIndex] = newObject;
+
+//    if (pageContent) {
+//     res.json(
+//         {
+//             code : "success",
+//             msg : "Saving Done",
+//             //obj: pageContent
+//         }
+//     )
+//     } else {
+//     res.status(400).json(
+//         {
+//             code : "failed",
+//             msg : "Error encountered while saving home page content"
+//         }
+//     )
+//     }
+
+// })
+
+app.post('/page-content', (req, res) => {
+    const { pageContent, contentValue } = req.body;
+    console.log(req.body)
+    // Do something with the received data, e.g., save it to a database
+    console.log('Received content for page:', pageContent);
+    console.log('Content value:', contentValue);
+    pageContentArr[0].content = contentValue;
+    // Respond to the frontend
+    res.json({ code: 'success', message: 'Content received successfully' });
+});
+
+app.get('/page-content/:id', (req, res)=>{
+    const pageId = req.params.id;
+
+    const pageFound = pageContentArr.find( 
+             (page) => {
+                 return pageId === page.id  
+             } 
+     )
+     if (pageFound){
+         res.json(pageFound.content);
+     } else {
+         res.status(400).json("Invalid Id")
+     }
+ })
+
+const messageDB = [];
+app.post('/save-message', (req, res) => {
+    const {fullname, email, message} = req.body;
+    
+    if(fullname === ""){
+        return res.status(400).json({code: 'failed', message: 'Invalid input!'})
+    }
+
+    let messageID = messageDB.length + 1;
+    let messageDate = Date();
+    const newMessage = {
+        msgID: messageID,
+        date: messageDate,
+        fullname: fullname,
+        email: email,
+        message: message
+    }
+    messageDB.push(newMessage);
+    console.log(messageDB)
+    res.status(200).json({code: 'success', message: 'Message sent successfully!'})
+})
 app.listen(5000)
 console.log('Server is running in port 5000')

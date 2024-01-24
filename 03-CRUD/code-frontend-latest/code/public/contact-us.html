@@ -1,13 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us</title>
-</head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Home Page</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+      <!-- Bootstrap JS and jQuery (required for Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    </head>
+
 <body>
+
     
-    <p> This is the contact us page </p>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <a class="navbar-brand" href="#">Your Logo</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  
+  <!-- Header -->
+  <header class="container-fluid text-center mt-5 pt-5 ">
+    <h1>Contact Us</h1>
+  
+  </header>
+  <!-- Main Content -->
+  <div class="container d-flex justify-content-center ">
+    <form class="w-75" id="contact">
+      <div class="mb-3">
+        <label for="fullname" class="form-label text-start ">Full name</label>
+        <input type="text" class="form-control" id="fullname" aria-describedby="emailHelp">
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label text-start ">Email address</label>
+        <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+      </div>
+      <div class="mb-3">
+        <label for="message" class="form-label d-block ">Message</label>
+        <textarea name="message" id="message"  rows="10" class="w-100"></textarea>
+      </div>
+      
+      <button class="btn btn-primary" id="formSubmit">Submit</button>
+    </form>
+  </div>
+ 
+  <!-- Footer -->
+  <footer class="container-fluid text-center mt-5">
+    <p>&copy; 2024 Your Website. All Rights Reserved.</p>
+  </footer>
+  
+  
+  
+  
+  <script>
+
+sendMessage = (event) => {
+event.preventDefault();
+
+const webservice_api_url = 'http://localhost:5000/save-message';
+
+const fullname = document.getElementById('fullname').value;
+const email = document.getElementById('email').value;
+const message = document.getElementById('message').value;
+
+
+const data = {
+    fullname: fullname,
+    email: email,
+    message: message
+}
+
+console.log(data)
+const requestOption = {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
+};
+
+fetch(webservice_api_url, requestOption)
+    .then( response => response.json() )
+    .then(data => {
+        console.log('check here:', data);
+        alert(data.message)
+    })
+    .catch(error => {
+        console.log(error);
+        alert(error)
+    });
+
+  const form = document.getElementById('contact');
+  form.reset();
+}
+
+
+document.getElementById('formSubmit').addEventListener('click', sendMessage);
+
+
+  </script>
 
 </body>
 </html>
